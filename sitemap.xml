@@ -1,0 +1,14 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/CustomMatch.html</loc></url>
+<url><loc>/reference/MatchAll.html</loc></url>
+<url><loc>/reference/MatchAllWhere.html</loc></url>
+<url><loc>/reference/MatchAny.html</loc></url>
+<url><loc>/reference/MatchAnyWhere.html</loc></url>
+<url><loc>/reference/RuleEngine.html</loc></url>
+<url><loc>/reference/RunIndicators.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+</urlset>
+
