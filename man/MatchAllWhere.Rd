@@ -11,29 +11,26 @@ MatchAllWhere(
   definition_codes,
   filter_columns,
   lookup_values,
-  regex_prefix_search = FALSE,
-  inverse_match_result = FALSE
+  regex_prefix_search = FALSE
 )
 }
 \arguments{
-\item{rule_engine}{The rule engine containing the dataset where the indicators will be applied.}
+\item{rule_engine}{Object of class RuleEngine.The rule engine containing the dataset where the indicators will be applied.}
 
-\item{indicator_name}{A string representing the name of the indicator, assigned to the `name` property.}
+\item{indicator_name}{Character. A string representing the name of the indicator, assigned to the `name` property.}
 
-\item{target_columns}{A vector specifying the column names where the values from `definition_codes` will be searched.
+\item{target_columns}{List of characters.  Column names where the values from `definition_codes` will be searched.
 Searches will only be performed in the corresponding column of `target_columns` if the condition is met
 in the column of the same index in `filter_columns`.}
 
-\item{definition_codes}{A set of codes used to define the matching criteria applied to `target_columns`.}
+\item{definition_codes}{List of characters. A set of codes used to define the matching criteria applied to `target_columns`.}
 
-\item{filter_columns}{A vector specifying the columns that define the conditions under which the `lookup_values` must hold.
+\item{filter_columns}{List of characters. Column names that define the conditions under which the `lookup_values` must hold.
 These conditions are evaluated in order and are directly linked to the columns of `target_columns`.}
 
-\item{lookup_values}{A list of values used to define logical conditions that must be satisfied in the order of `filter_columns`.}
+\item{lookup_values}{List of characters.A list of values used to define logical conditions that must be satisfied in the order of `filter_columns`.}
 
-\item{regex_prefix_search}{Logical value indicating whether to use regex-based prefix searches (`TRUE`) or exact matches (`FALSE`).}
-
-\item{inverse_match_result}{Logical value indicating whether to invert the match results (`TRUE`) or keep them as is (`FALSE`).}
+\item{regex_prefix_search}{Logical. Logical value indicating whether to use regex-based prefix searches (`TRUE`) or exact matches (`FALSE`).}
 }
 \value{
 Returns an instance of MatchAnyWhere with a generated SQL rule stored in the `sql_rule` field.
@@ -70,18 +67,20 @@ filter_columns <- c("present_on_admission_d2","present_on_admission_d3")
 lookup_values <- c("Yes", "true")
 
 alcohol_indicator_poa <- IndicR::MatchAllWhere(
-                reng,            # rule_engine
-                "alcohol_i_poa", # Indicator name
-                target_columns,  # Columns where the search is performed.
-                definition_codes # Codes to look for in the columns,
+                reng,
+                "alcohol_i_poa",
+                target_columns,
+                definition_codes ,
                 filter_columns,
                 lookup_values
                 )
+
+# Codes to look for in target_columns (start with "F10")
 alcohol_i_regex_poa <- IndicR::MatchAllWhere(
-                reng,            # rule_engine
-                "alcohol_i_regex_poa", # Indicator name
-                target_columns,  # Columns where the search is performed.
-                c("F10") # Codes to look for in the columns (start with "F10"),
+                reng,
+                "alcohol_i_regex_poa",
+                target_columns,
+                c("F10") ,
                 filter_columns,
                 lookup_values,
                 regex_prefix_search = TRUE
@@ -89,6 +88,6 @@ alcohol_i_regex_poa <- IndicR::MatchAllWhere(
 
 
 indicators_list <- list(alcohol_indicator_poa, alcohol_i_regex_poa)
-reng$run_indicators(indicators_list, append_results = FALSE, csv_path="./results.csv")
+IndicR::RunIndicators(reng,indicators_list, append_results = FALSE, csv_path="./results.csv")
 }
 }

@@ -7,24 +7,26 @@
 RuleEngine(df, unique_identifier_column, database_path = ":memory:")
 }
 \arguments{
-\item{df}{Dataframe object in which you want to process the indicators.}
+\item{df}{Data frame. Data frame object in which you want to process the indicators.}
 
-\item{unique_identifier_column}{Name of the column containing the unique identifiers for the provided dataframe (there can be no repeated values in this column).}
+\item{unique_identifier_column}{Character. Name of the column containing the unique identifiers for the provided dataframe (there can be no repeated values in this column).}
 
-\item{database_path}{Path where you want to save the database needed to calculate the indicators (by default in memory).}
+\item{database_path}{Character. Path where you want to save the database needed to calculate the indicators. By default ":memory:" (in memory).}
 }
 \value{
-A Rule Engine Object.
+A RuleEngine Object.
 }
 \description{
-RuleEngine
+This class facilitates the processing and evaluation of indicators on a dataset by leveraging a database engine.
+It is designed to work with data frames and ensures efficient handling of operations, including validation of unique identifiers
+and saving results.
 }
 \examples{
 \dontrun{
 df <- read.csv("dataset.csv", sep = "|", header = TRUE)
-reng <- rule_engine(df,"hospitalization_id")
+reng <- RuleEngine(df,"hospitalization_id")
 
 df2 <- read.csv("dataset2.csv", sep = "|", header = TRUE)
-reng2 <- rule_engine(df2,"episode_id","./indicators.duckdb")
+reng2 <- RuleEngine(df2,"episode_id","./indicators.duckdb")
 }
 }

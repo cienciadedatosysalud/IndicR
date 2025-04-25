@@ -1,9 +1,6 @@
 # IndicR
-#' Create Parent Class SqlRuleIndicator
-#'
-#' @param name Name of the indicator.
-#' @param sql_rule Logic of the indicator.
-#' @return An SqlRuleIndicator Object.
+
+
 SqlRuleIndicator <- setRefClass(
   "SqlRuleIndicator",
   fields = list(
@@ -27,19 +24,149 @@ SqlRuleIndicator <- setRefClass(
 )
 
 
+# Restricted words
+restricted_words <- c('ABORT','ABS','ABSOLUTE','ACTION','ADD','ADMIN','AFTER','AGGREGATE','ALL','ALSO','ALTER','ALWAYS',
+                      'ANALYSE','ANALYZE','AND','ANY','ARRAY','AS','ASC','ASSERTION','ASSIGNMENT','ASYMMETRIC','AT',
+                      'ATTRIBUTE','AUTHORIZATION','BACKWARD','BEFORE','BEGIN','BETWEEN','BIGINT','BINARY','BIT',
+                      'BOOLEAN','BOTH','BY','CACHE','CALL','CALLED','CASCADE','CASCADED','CASE','CAST','CATALOG',
+                      'CHAIN','CHAR','CHARACTER','CHARACTERISTICS','CHECK','CHECKPOINT','CLASS','CLOSE','CLUSTER',
+                      'COALESCE','COLLATE','COLLATION','COLUMN','COLUMNS','COMMENT','COMMENTS','COMMIT','COMMITTED',
+                      'CONCURRENTLY','CONFIGURATION','CONFLICT','CONNECTION','CONSTRAINT','CONSTRAINTS','CONTENT',
+                      'CONTINUE','CONVERSION','COPY','COST','CREATE','CROSS','CSV','CUBE','CURRENT','CURRENT_CATALOG',
+                      'CURRENT_DATE','CURRENT_ROLE','CURRENT_SCHEMA','CURRENT_TIME','CURRENT_TIMESTAMP',
+                      'CURRENT_USER','CURSOR','CYCLE','DATA','DATABASE','DAY','DEALLOCATE','DEC','DECIMAL','DECLARE',
+                      'DEFAULT','DEFAULTS','DEFERRABLE','DEFERRED','DEFINED','DEFINER','DELETE','DELIMITER','DELIMITERS',
+                      'DEPENDS','DESC','DETACH','DICTIONARY','DISABLE','DISCARD','DISTINCT','DO','DOCUMENT','DOMAIN',
+                      'DOUBLE','DROP','EACH','ELSE','ENABLE','ENCODING','ENCRYPTED','END','ENUM','ESCAPE','EVENT',
+                      'EXCEPT','EXCLUDE','EXCLUDING','EXCLUSIVE','EXECUTE','EXISTS','EXPLAIN','EXTENSION','EXTERNAL',
+                      'EXTRACT','FALSE','FAMILY','FETCH','FILTER','FIRST','FLOAT','FOLLOWING','FOR','FORCE','FOREIGN',
+                      'FORWARD','FREEZE','FROM','FULL','FUNCTION','FUNCTIONS','GENERATED','GLOBAL','GRANT','GRANTED',
+                      'GREATEST','GROUP','GROUPING','GROUPS','HANDLER','HAVING','HEADER','HOLD','HOUR','IDENTITY','IF',
+                      'ILIKE','IMMEDIATE','IMMUTABLE','IMPLICIT','IMPORT','IN','INCLUDE','INCLUDING','INCREMENT',
+                      'INDEX','INDEXES','INHERIT','INHERITS','INITIALLY','INLINE','INNER','INOUT','INPUT','INSENSITIVE',
+                      'INSERT','INSTEAD','INT','INTEGER','INTERSECT','INTERVAL','INTO','INVOKER','IS','ISNULL',
+                      'ISOLATION','JOIN','KEY','LABEL','LANGUAGE','LARGE','LAST','LATERAL','LEADING','LEAKPROOF',
+                      'LEAST','LEFT','LEVEL','LIKE','LIMIT','LISTEN','LOAD','LOCAL','LOCALTIME','LOCALTIMESTAMP',
+                      'LOCATION','LOCK','LOCKED','LOGGED','MAPPING','MATCH','MATERIALIZED','MAXVALUE','METHOD','MINUTE',
+                      'MINVALUE','MODE','MONTH','MOVE','NAME','NAMES','NATIONAL','NATURAL','NCHAR','NEW','NEXT','NO',
+                      'NONE','NOT','NOTHING','NOTIFY','NOTNULL','NOWAIT','NULL','NULLIF','NULLS','NUMERIC','OBJECT',
+                      'OF','OFF','OFFSET','OIDS','OLD','ON','ONLY','OPERATOR','OPTION','OPTIONS','OR','ORDER',
+                      'ORDINALITY','OTHERS','OUT','OUTER','OVER','OVERLAPS','OVERLAY','OVERRIDING','OWNED','OWNER',
+                      'PARALLEL','PARSER','PARTIAL','PARTITION','PASSING','PASSWORD','PLACING','PLANS','POLICY',
+                      'POSITION','PRECEDING','PRECISION','PREPARE','PREPARED','PRESERVE','PRIMARY','PRIOR',
+                      'PRIVILEGES','PROCEDURAL','PROCEDURE','PROCEDURES','PROGRAM','PUBLICATION','QUOTE','RANGE','READ',
+                      'REAL','REASSIGN','RECHECK','RECURSIVE','REF','REFERENCES','REFERENCING','REFRESH','REINDEX',
+                      'RELATIVE','RELEASE','RENAME','REPEATABLE','REPLACE','REPLICA','REQUIRING','RESET','RESTART',
+                      'RESTRICT','RETURNING','RETURNS','REVOKE','RIGHT','ROLE','ROLLBACK','ROLLUP','ROUTINE','ROUTINES',
+                      'ROW','ROWS','RULE','SAVEPOINT','SCHEMA','SCHEMAS','SCROLL','SEARCH','SECOND','SECURITY','SELECT',
+                      'SEQUENCE','SEQUENCES','SERIALIZABLE','SERVER','SESSION','SESSION_USER','SET','SETOF','SETS',
+                      'SHARE','SHOW','SIMILAR','SIMPLE','SKIP','SMALLINT','SNAPSHOT','SOME','SQL','STABLE','STANDALONE',
+                      'START','STATEMENT','STATISTICS','STDIN','STDOUT','STORAGE','STORED','STRICT','STRIP',
+                      'SUBSCRIPTION','SUBSTRING','SYMMETRIC','SYSID','SYSTEM','TABLE','TABLES','TABLESAMPLE',
+                      'TABLESPACE','TEMP','TEMPLATE','TEMPORARY','TEXT','THEN','TIES','TIME','TIMESTAMP','TO',
+                      'TRAILING','TRANSACTION','TRANSFORM','TREAT','TRIGGER','TRIM','TRUE','TRUNCATE','TRUSTED',
+                      'TYPE','TYPES','UNBOUNDED','UNCOMMITTED','UNENCRYPTED','UNION','UNIQUE','UNKNOWN','UNLISTEN',
+                      'UNLOGGED','UNTIL','UPDATE','USER','USING','VACUUM','VALID','VALIDATE','VALIDATOR','VALUE',
+                      'VALUES','VARCHAR','VARIADIC','VARYING','VERBOSE','VERSION','VIEW','VIEWS','VOLATILE','WHEN',
+                      'WHERE','WHITESPACE','WINDOW','WITH','WITHIN','WITHOUT','WORK','WRAPPER','WRITE','XML',
+                      'XMLATTRIBUTES','XMLCONCAT','XMLELEMENT','XMLEXISTS','XMLFOREST','XMLNAMESPACES','XMLPARSE',
+                      'XMLPI','XMLROOT','XMLSERIALIZE','XMLTABLE','YEAR','YES','ZONE','ROW_INDEX_ID')
+
+
+
+check_params_simple <- function(rule_engine,indicator_name,target_columns,definition_codes,regex_prefix_search){
+  if (!inherits(rule_engine, "RuleEngine")) {
+    stop("The 'rule_engine' argument must be of class RuleEngine")
+  }
+  if (!is.character(indicator_name)) {
+    stop("The 'indicator_name' argument must be of type character")
+  }
+  if (length(setdiff(toupper(indicator_name), restricted_words)) == 0) {
+    stop("The 'indicator_name' argument cannot match any restricted word.")
+  }
+  if (!is.vector(target_columns) || !all(sapply(target_columns, is.character))) {
+    stop("The 'target_columns' argument must be a list of characters")
+  }
+  invalid_columns <- setdiff(target_columns, rule_engine$columns)
+  if (length(invalid_columns) > 0) {
+    stop("Some columns in 'target_columns' are not defined in the original data frame: ", paste(invalid_columns, collapse = ", "))
+  }
+  if (!is.vector(definition_codes) || !all(sapply(definition_codes, is.character))) {
+    stop("The 'definition_codes' argument must be a list of characters")
+  }
+  if (!is.logical(regex_prefix_search)) {
+    stop("The 'regex_prefix_search' argument must be a logical value (boolean)")
+  }
+
+  target_columns_part <- paste(sprintf("'%s'", target_columns), collapse = ",")
+  query <- sprintf("select count(distinct data_type) > 1 as n_data_type
+from information_schema.columns where table_name = 'dataframe_original' and column_name in (%s)",target_columns_part)
+  result <- DBI::dbGetQuery(rule_engine$conn,query )
+  if (result$n_data_type) {
+    warning("The columns defined in 'target_columns' contain different data types")
+  }
+}
+
+
+check_params_where <- function(rule_engine,indicator_name,target_columns,definition_codes,filter_columns,regex_prefix_search){
+  if (!inherits(rule_engine, "RuleEngine")) {
+    stop("The 'rule_engine' argument must be of class RuleEngine")
+  }
+  if (!is.character(indicator_name)) {
+    stop("The 'indicator_name' argument must be of type character")
+  }
+  if (length(setdiff(toupper(indicator_name), restricted_words)) == 0) {
+    stop("The 'indicator_name' argument cannot match any restricted word.")
+  }
+  if (!is.vector(target_columns) || !all(sapply(target_columns, is.character))) {
+    stop("The 'target_columns' argument must be a list of characters")
+  }
+  invalid_columns <- setdiff(target_columns, rule_engine$columns)
+  if (length(invalid_columns) > 0) {
+    stop("Some columns in 'target_columns' are not defined in the original data frame: ", paste(invalid_columns, collapse = ", "))
+  }
+  if (!is.vector(definition_codes)  || !all(sapply(definition_codes, is.character))) {
+    stop("The 'definition_codes' argument must be a list of characters")
+  }
+  if (!is.logical(regex_prefix_search)) {
+    stop("The 'regex_prefix_search' argument must be a logical value (boolean)")
+  }
+  target_columns_part <- paste(sprintf("'%s'", target_columns), collapse = ",")
+  query <- sprintf("select count(distinct data_type) > 1 as n_data_type
+from information_schema.columns where table_name = 'dataframe_original' and column_name in (%s)",target_columns_part)
+  result <- DBI::dbGetQuery(rule_engine$conn,query )
+  if (result$n_data_type) {
+    warning("The columns defined in 'target_columns' contain different data types")
+  }
+
+  invalid_columns <- setdiff(filter_columns, rule_engine$columns)
+  if (length(invalid_columns) > 0) {
+    stop("Some columns in 'filter_columns' are not defined in the original data frame: ", paste(invalid_columns, collapse = ", "))
+  }
+
+
+  if (length(target_columns) != length(filter_columns)) {
+    stop("The length of 'target_columns' must be equal to the length of 'filter_columns'.")
+  }
+}
+
 #' RuleEngine
 #'
-#' @param df Dataframe object in which you want to process the indicators.
-#' @param unique_identifier_column Name of the column containing the unique identifiers for the provided dataframe (there can be no repeated values in this column).
-#' @param database_path Path where you want to save the database needed to calculate the indicators (by default in memory).
-#' @return A Rule Engine Object.
+#' @description This class facilitates the processing and evaluation of indicators on a dataset by leveraging a database engine.
+#' It is designed to work with data frames and ensures efficient handling of operations, including validation of unique identifiers
+#' and saving results.
+#'
+#' @param df Data frame. Data frame object in which you want to process the indicators.
+#' @param unique_identifier_column Character. Name of the column containing the unique identifiers for the provided dataframe (there can be no repeated values in this column).
+#' @param database_path Character. Path where you want to save the database needed to calculate the indicators. By default ":memory:" (in memory).
+#' @return A RuleEngine Object.
 #' @examples
 #' \dontrun{
 #' df <- read.csv("dataset.csv", sep = "|", header = TRUE)
-#' reng <- rule_engine(df,"hospitalization_id")
+#' reng <- RuleEngine(df,"hospitalization_id")
 #'
 #' df2 <- read.csv("dataset2.csv", sep = "|", header = TRUE)
-#' reng2 <- rule_engine(df2,"episode_id","./indicators.duckdb")
+#' reng2 <- RuleEngine(df2,"episode_id","./indicators.duckdb")
 #' }
 #' @importFrom DBI dbConnect
 #' @importFrom DBI dbWriteTable
@@ -49,14 +176,99 @@ SqlRuleIndicator <- setRefClass(
 #' @importFrom duckdb duckdb
 #' @importFrom methods new
 #' @export
-#'
-RuleEngine <- function(df,unique_identifier_column,database_path = ":memory:"){
+RuleEngine <- function(df,
+                       unique_identifier_column,
+                       database_path = ":memory:"){
   return(RuleEngineClass$new(df,unique_identifier_column,database_path))
 }
 
 
+#' @title RunIndicators
+#' @description Executes the specified indicator rules using the given RuleEngine object
+#' and provides options for output customization.
 #'
+#' @param rule_engine RuleEngine object. Used to apply the indicator rules
+#' on the associated dataset.
+#' @param indicators_rules List of objects of class `SqlRuleIndicator` (MatchAny, MatchAll, MatchAnyWhere, MatchAllWhere, CustomMatch). Each object
+#' represents an indicator rule to be applied.
+#' @param only_true_indicators Logical. If `TRUE`, the function returns only the records
+#' that meet at least one of the indicators. Defaults to `TRUE`.
+#' @param append_results Logical. If `TRUE`, the function returns the original dataset
+#' along with the indicators. If `FALSE`, only the `unique_identifier_column` and the
+#' indicator results are returned. Defaults to `FALSE`.
+#' @param to_csv Character or `NULL`. Path to save the results as a CSV file. If `NULL`,
+#' no CSV file is created. Defaults to `NULL`.
+#' @param to_parquet  Character or `NULL`. Path to save the results as a parquet file format
+#' with gzip compression. Defaults to `NULL`.
+#' @return Depends on the parameter values:
+#' - If `only_true_indicators = TRUE`, only the records matching at least one indicator
+#'   are returned.
+#' - If `append_results = TRUE`, the full dataset with appended indicators is returned.
+#' - If `append_results = FALSE`, only the `unique_identifier_column` and the indicator
+#'   results are returned.
+#' - If `to_csv` or `to_parquet` is specified, the results are saved to the respective file format.
 #'
+#' @details This function ensures that all `indicators_rules` are objects of class
+#' `SqlRuleIndicator` (MatchAny, MatchAll, MatchAnyWhere, MatchAllWhere, CustomMatch). If any invalid object is passed, the function stops with an error.
+#'
+#' @examples
+#' \dontrun{
+#' # Example usage:
+#'
+#' df <- read.csv("dataset.csv", sep = "|", header = TRUE)
+#' rule_engine <- RuleEngine(df,"hospitalization_id")
+#'
+#' target_columns <- c("diagnosis1")
+#' definition_codes <- c("F10.10","F10.11","F10.120","F10.121")
+#'
+#' alcohol_indicator <- IndicR::MatchAny(
+#'                 rule_engine,
+#'                 "alcohol_i",
+#'                 target_columns,
+#'                 definition_codes
+#'                 )
+#' indicators_rules <- list(alcohol_indicator)
+#'
+#' # Option return data frame
+#' result <- IndicR::RunIndicators(
+#'   rule_engine,
+#'   indicators_rules,
+#'   only_true_indicators = TRUE,
+#'   append_results = FALSE
+#'   )
+#'
+#' # Option save to csv file
+#' IndicR::RunIndicators(
+#'   rule_engine,
+#'   indicators_rules,
+#'   only_true_indicators = TRUE,
+#'   append_results = FALSE,
+#'   to_csv = "output.csv"
+#'   )
+#'
+#' # Option save to parquet file
+#' IndicR::RunIndicators(
+#'   rule_engine,
+#'   indicators_rules,
+#'   only_true_indicators = TRUE,
+#'   append_results = FALSE,
+#'   to_csv = "output.parquet"
+#'   )
+#' }
+#' @export
+RunIndicators <- function(rule_engine, indicators_rules, only_true_indicators = TRUE, append_results = FALSE,
+                                   to_csv = NULL, to_parquet = FALSE){
+
+  indicators_ok <- all(sapply(indicators_rules, function(rule) inherits(rule, "SqlRuleIndicator")))
+  if (!indicators_ok) {
+    stop("Solo se aceptan objetos de la clase SqlRuleIndicator.")
+  }
+
+  rule_engine$run_indicators(indicators_rules, only_true_indicators, append_results,
+                             to_csv, to_parquet)
+}
+
+
 RuleEngineClass <- setRefClass(
   "RuleEngine",
   fields = list(
@@ -92,10 +304,6 @@ RuleEngineClass <- setRefClass(
 
     run_indicators = function(indicators_rules, only_true_indicators = TRUE, append_results = FALSE,
                                     csv_path = NULL, to_parquet = FALSE) {
-      indicators_ok <- all(sapply(indicators_rules, function(rule) inherits(rule, "SqlRuleIndicator")))
-      if (!indicators_ok) {
-        stop("Solo se aceptan objetos de la clase SqlRuleIndicator.")
-      }
 
       DBI::dbExecute(conn,sprintf("CREATE OR REPLACE TABLE results_ as (select row_index_id, %s  from dataframe_original)", row_identifier))
       DBI::dbExecute(conn, "
@@ -155,15 +363,13 @@ RuleEngineClass <- setRefClass(
 #' of the target columns match the specified definition codes, ensuring that
 #' the indicator is TRUE if at least one match occurs.
 #'
-#' @param rule_engine The rule engine containing the dataset where indicators will be applied.
-#' @param indicator_name A string representing the name of the indicator, assigned to the `name` field.
-#' @param target_columns A vector specifying the column names where the match is evaluated.
+#' @param rule_engine Object of class RuleEngine.The rule engine containing the dataset where indicators will be applied.
+#' @param indicator_name Character. A string representing the name of the indicator, assigned to the `name` field.
+#' @param target_columns List of characters.  Column names where the match is evaluated.
 #'                       Searches are performed across all target columns.
-#' @param definition_codes A set of codes used to define the matching criteria for the target columns.
-#' @param regex_prefix_search Logical value indicating whether to perform prefix-based regex matches (`TRUE`)
+#' @param definition_codes List of characters. A set of codes used to define the matching criteria for the target columns.
+#' @param regex_prefix_search Logical. Logical value indicating whether to perform prefix-based regex matches (`TRUE`)
 #'                            or exact matches (default) (`FALSE`).
-#' @param inverse_match_result Logical value indicating whether to invert the match results (`TRUE`)
-#'                             or retain them as is (`FALSE`).
 #' @examples
 #' \dontrun{
 #' hosp_dataframe <- data.frame(
@@ -180,21 +386,27 @@ RuleEngineClass <- setRefClass(
 #' definition_codes <- c("F10.10","F10.11","F10.120","F10.121")
 #'
 #' alcohol_indicator <- IndicR::MatchAny(
-#'                 reng,            # rule_engine
-#'                 "alcohol_i",     # Indicator name
-#'                 target_columns,  # Columns where the search is performed.
-#'                 definition_codes # Codes to look for in the columns
+#'                 reng,
+#'                 "alcohol_i",
+#'                 target_columns,
+#'                 definition_codes
 #'                 )
 #'}
 #'@return Returns an instance of MatchAny with a generated SQL rule.
 #'@export
-#'
 MatchAny <- function(rule_engine, indicator_name, target_columns,
-                     definition_codes, regex_prefix_search = FALSE,
-                     inverse_match_result = FALSE){
+                     definition_codes, regex_prefix_search = FALSE){
+
+  definition_codes <- definition_codes[definition_codes != "" & !is.na(definition_codes) & !is.null(definition_codes)]
+  if (length(definition_codes) < 1) {
+    stop("Error: 'definition_codes' must contain at least one non-empty, non-null element.")
+  }
+
+  check_params_simple(rule_engine,indicator_name,target_columns,definition_codes,regex_prefix_search)
+
   return(MatchAnyClass$new(rule_engine, indicator_name, target_columns,
                     definition_codes, regex_prefix_search,
-                    inverse_match_result))
+                    ))
 }
 
 
@@ -206,11 +418,6 @@ MatchAnyClass <- setRefClass(
     initialize = function(rule_engine, indicator_name, target_columns,
                           definition_codes, regex_prefix_search = FALSE,
                           inverse_match_result = FALSE) {
-
-      invalid_columns <- setdiff(target_columns, rule_engine$columns)
-      if (length(invalid_columns) > 0) {
-        stop("Solo se acepta ... (columnas invalidas): ", paste(invalid_columns, collapse = ", "))
-      }
 
       name <<- indicator_name
       columns_part <- paste(target_columns, collapse = ",")
@@ -257,17 +464,16 @@ MatchAnyClass <- setRefClass(
 #' and satisfy the conditions in lookup values, ensuring that the indicator is TRUE if at least one such target column satisfies the matching criteria.
 #'
 #'
-#' @param rule_engine The rule engine containing the dataset where the indicators will be applied.
-#' @param indicator_name A string representing the name of the indicator, assigned to the `name` property.
-#' @param target_columns A vector specifying the column names where the values from `definition_codes` will be searched.
+#' @param rule_engine Object of class RuleEngine.The rule engine containing the dataset where the indicators will be applied.
+#' @param indicator_name Character. A string representing the name of the indicator, assigned to the `name` property.
+#' @param target_columns List of characters.  Column names where the values from `definition_codes` will be searched.
 #'                       Searches will only be performed in the corresponding column of `target_columns` if the condition is met
 #'                       in the column of the same index in `filter_columns`.
-#' @param definition_codes A set of codes used to define the matching criteria applied to `target_columns`.
-#' @param filter_columns A vector specifying the columns that define the conditions under which the `lookup_values` must hold.
+#' @param definition_codes List of characters. A set of codes used to define the matching criteria applied to `target_columns`.
+#' @param filter_columns List of characters. Column names that define the conditions under which the `lookup_values` must hold.
 #'                       These conditions are evaluated in order and are directly linked to the columns of `target_columns`.
-#' @param lookup_values A list of values used to define logical conditions that must be satisfied in the order of `filter_columns`.
-#' @param regex_prefix_search Logical value indicating whether to use regex-based prefix searches (`TRUE`) or exact matches (`FALSE`).
-#' @param inverse_match_result Logical value indicating whether to invert the match results (`TRUE`) or keep them as is (`FALSE`).
+#' @param lookup_values List of characters.A list of values used to define logical conditions that must be satisfied in the order of `filter_columns`.
+#' @param regex_prefix_search Logical. Logical value indicating whether to use regex-based prefix searches (`TRUE`) or exact matches (`FALSE`).
 #'
 #' @return Returns an instance of MatchAnyWhere with a generated SQL rule.
 #'
@@ -295,18 +501,20 @@ MatchAnyClass <- setRefClass(
 #' lookup_values <- c("Yes", "true")
 #'
 #' alcohol_indicator_poa <- IndicR::MatchAnyWhere(
-#'                 reng,            # rule_engine
-#'                 "alcohol_i_poa", # Indicator name
-#'                 target_columns,  # Columns where the search is performed.
-#'                 definition_codes # Codes to look for in the columns,
+#'                 reng,
+#'                 "alcohol_i_poa",
+#'                 target_columns,
+#'                 definition_codes
 #'                 filter_columns,
 #'                 lookup_values
-#'                 )
+#'               )
+#'
+#' # Codes to look for in the columns (start with "F10")
 #' alcohol_i_regex_poa <- IndicR::MatchAnyWhere(
-#'                 reng,            # rule_engine
-#'                 "alcohol_i_regex_poa", # Indicator name
-#'                 target_columns,  # Columns where the search is performed.
-#'                 c("F10") # Codes to look for in the columns (start with "F10"),
+#'                 reng,
+#'                 "alcohol_i_regex_poa",
+#'                 target_columns,
+#'                 c("F10")
 #'                 filter_columns,
 #'                 lookup_values,
 #'                 regex_prefix_search = TRUE
@@ -314,23 +522,29 @@ MatchAnyClass <- setRefClass(
 #'
 #'
 #' indicators_list <- list(alcohol_indicator_poa, alcohol_i_regex_poa)
-#' reng$run_indicators(indicators_list, append_results = FALSE, csv_path="./results.csv")
+#' IndicR::RunIndicators(reng,indicators_list, append_results = FALSE, csv_path="./results.csv")
 #' }
 #' @export
-#'
 MatchAnyWhere <- function(rule_engine, indicator_name, target_columns, definition_codes,
-                          filter_columns, lookup_values, regex_prefix_search= FALSE,
-                          inverse_match_result= FALSE){
+                          filter_columns, lookup_values, regex_prefix_search= FALSE){
 
+  definition_codes <- definition_codes[definition_codes != "" & !is.na(definition_codes) & !is.null(definition_codes)]
+  if (length(definition_codes) < 1) {
+    stop("Error: 'definition_codes' must contain at least one non-empty, non-null element.")
+  }
 
+  lookup_values <- lookup_values[lookup_values != "" & !is.na(lookup_values) & !is.null(lookup_values)]
+  if (length(lookup_values) < 1) {
+    stop("Error: 'lookup_values' must contain at least one non-empty, non-null element.")
+  }
+
+  check_params_where(rule_engine, indicator_name, target_columns, definition_codes,
+                     filter_columns, regex_prefix_search)
   return(MatchAnyWhereClass$new(rule_engine, indicator_name, target_columns, definition_codes,
-                                filter_columns, lookup_values, regex_prefix_search,
-                                inverse_match_result))
+                                filter_columns, lookup_values, regex_prefix_search))
 }
 
 
-
-#'
 MatchAnyWhereClass <- setRefClass(
   "MatchAnyWhere",
   contains = "SqlRuleIndicator",
@@ -338,26 +552,6 @@ MatchAnyWhereClass <- setRefClass(
     initialize = function(rule_engine, indicator_name, target_columns, definition_codes,
                           filter_columns, lookup_values, regex_prefix_search= FALSE,
                           inverse_match_result= FALSE) {
-
-      invalid_columns <- setdiff(target_columns, rule_engine$columns)
-      if (length(invalid_columns) > 0) {
-        stop("Solo se acepta ... (columnas invalidas): ", paste(invalid_columns, collapse = ", "))
-      }
-
-      invalid_columns <- setdiff(filter_columns, rule_engine$columns)
-      if (length(invalid_columns) > 0) {
-        stop("Solo se acepta ... (columnas invalidas): ", paste(invalid_columns, collapse = ", "))
-      }
-
-
-      if (length(target_columns) != length(filter_columns)) {
-        stop("La longitud debe ser la misma")
-      }
-
-      # TODO check filter_columns same data type
-
-      # select count(*) filter(data_type ='BOOLEAN') as columns_boolean, count(*) filter(data_type !='BOOLEAN') as columns_no_boolean
-      # from information_schema.columns where table_name = 'dataframe_' and column_name in ('poad1','poad2','poad3')
 
 
       name <<- indicator_name
@@ -399,15 +593,13 @@ WHERE b.code_to_compare IS NOT NULL", codes_part, if (inverse_match_result) "NOT
 #' of the target columns match the specified definition codes, ensuring that
 #' the indicator is TRUE only if every target column has a match.
 #'
-#' @param rule_engine The rule engine containing the dataset where indicators will be applied.
-#' @param indicator_name A string representing the name of the indicator, assigned to the `name` field.
-#' @param target_columns A vector specifying the column names where the match is evaluated.
+#' @param rule_engine Object of class RuleEngine.The rule engine containing the dataset where indicators will be applied.
+#' @param indicator_name Character. A string representing the name of the indicator, assigned to the `name` field.
+#' @param target_columns List of characters.  Column names where the match is evaluated.
 #'                       Searches are performed across all target columns.
-#' @param definition_codes A set of codes used to define the matching criteria for the target columns.
-#' @param regex_prefix_search Logical value indicating whether to perform prefix-based regex matches (`TRUE`)
+#' @param definition_codes List of characters. A set of codes used to define the matching criteria for the target columns.
+#' @param regex_prefix_search Logical. Logical value indicating whether to perform prefix-based regex matches (`TRUE`)
 #'                            or exact matches (default) (`FALSE`).
-#' @param inverse_match_result Logical value indicating whether to invert the match results (`TRUE`)
-#'                             or retain them as is (`FALSE`).
 #' @return Returns an instance of MatchAll with a generated SQL rule.
 #' @examples
 #' \dontrun{
@@ -425,20 +617,24 @@ WHERE b.code_to_compare IS NOT NULL", codes_part, if (inverse_match_result) "NOT
 #' definition_codes <- c("F10.10","F10.11","F10.120","F10.121")
 #'
 #' alcohol_indicator <- IndicR::MatchAll(
-#'                 reng,            # rule_engine
-#'                 "alcohol_i",     # Indicator name
-#'                 target_columns,  # Columns where the search is performed.
-#'                 definition_codes # Codes to look for in the columns
+#'                 reng,
+#'                 "alcohol_i",
+#'                 target_columns,
+#'                 definition_codes
 #'                 )
 #' }
 #' @export
-#'
 MatchAll <- function(rule_engine, indicator_name, target_columns,
-                     definition_codes, regex_prefix_search = FALSE,
-                     inverse_match_result = FALSE){
+                     definition_codes, regex_prefix_search = FALSE){
+
+  definition_codes <- definition_codes[definition_codes != "" & !is.na(definition_codes) & !is.null(definition_codes)]
+  if (length(definition_codes) < 1) {
+    stop("Error: 'definition_codes' must contain at least one non-empty, non-null element.")
+  }
+
+  check_params_simple(rule_engine,indicator_name,target_columns,definition_codes,regex_prefix_search)
   return(MatchAllClass$new(rule_engine, indicator_name, target_columns,
-                           definition_codes, regex_prefix_search,
-                           inverse_match_result))
+                           definition_codes, regex_prefix_search))
 }
 
 
@@ -449,11 +645,6 @@ MatchAllClass <- setRefClass(
     initialize = function(rule_engine, indicator_name, target_columns,
                           definition_codes, regex_prefix_search = FALSE,
                           inverse_match_result = FALSE) {
-
-      invalid_columns <- setdiff(target_columns, rule_engine$columns)
-      if (length(invalid_columns) > 0) {
-        stop("Solo se acepta ... (columnas invalidas): ", paste(invalid_columns, collapse = ", "))
-      }
 
       name <<- indicator_name
       columns_part <- paste(target_columns, collapse = ",")
@@ -512,17 +703,16 @@ group by a.row_index_id) where n_diag_match = n_diag_no_null",
 #' ensuring that the indicator is TRUE only if every such target column satisfies the matching criteria.
 #'
 #'
-#' @param rule_engine The rule engine containing the dataset where the indicators will be applied.
-#' @param indicator_name A string representing the name of the indicator, assigned to the `name` property.
-#' @param target_columns A vector specifying the column names where the values from `definition_codes` will be searched.
+#' @param rule_engine Object of class RuleEngine.The rule engine containing the dataset where the indicators will be applied.
+#' @param indicator_name Character. A string representing the name of the indicator, assigned to the `name` property.
+#' @param target_columns List of characters.  Column names where the values from `definition_codes` will be searched.
 #'                       Searches will only be performed in the corresponding column of `target_columns` if the condition is met
 #'                       in the column of the same index in `filter_columns`.
-#' @param definition_codes A set of codes used to define the matching criteria applied to `target_columns`.
-#' @param filter_columns A vector specifying the columns that define the conditions under which the `lookup_values` must hold.
+#' @param definition_codes List of characters. A set of codes used to define the matching criteria applied to `target_columns`.
+#' @param filter_columns List of characters. Column names that define the conditions under which the `lookup_values` must hold.
 #'                       These conditions are evaluated in order and are directly linked to the columns of `target_columns`.
-#' @param lookup_values A list of values used to define logical conditions that must be satisfied in the order of `filter_columns`.
-#' @param regex_prefix_search Logical value indicating whether to use regex-based prefix searches (`TRUE`) or exact matches (`FALSE`).
-#' @param inverse_match_result Logical value indicating whether to invert the match results (`TRUE`) or keep them as is (`FALSE`).
+#' @param lookup_values List of characters.A list of values used to define logical conditions that must be satisfied in the order of `filter_columns`.
+#' @param regex_prefix_search Logical. Logical value indicating whether to use regex-based prefix searches (`TRUE`) or exact matches (`FALSE`).
 #'
 #' @return Returns an instance of MatchAnyWhere with a generated SQL rule stored in the `sql_rule` field.
 #'
@@ -550,18 +740,20 @@ group by a.row_index_id) where n_diag_match = n_diag_no_null",
 #' lookup_values <- c("Yes", "true")
 #'
 #' alcohol_indicator_poa <- IndicR::MatchAllWhere(
-#'                 reng,            # rule_engine
-#'                 "alcohol_i_poa", # Indicator name
-#'                 target_columns,  # Columns where the search is performed.
-#'                 definition_codes # Codes to look for in the columns,
+#'                 reng,
+#'                 "alcohol_i_poa",
+#'                 target_columns,
+#'                 definition_codes ,
 #'                 filter_columns,
 #'                 lookup_values
 #'                 )
+#'
+#' # Codes to look for in target_columns (start with "F10")
 #' alcohol_i_regex_poa <- IndicR::MatchAllWhere(
-#'                 reng,            # rule_engine
-#'                 "alcohol_i_regex_poa", # Indicator name
-#'                 target_columns,  # Columns where the search is performed.
-#'                 c("F10") # Codes to look for in the columns (start with "F10"),
+#'                 reng,
+#'                 "alcohol_i_regex_poa",
+#'                 target_columns,
+#'                 c("F10") ,
 #'                 filter_columns,
 #'                 lookup_values,
 #'                 regex_prefix_search = TRUE
@@ -569,20 +761,28 @@ group by a.row_index_id) where n_diag_match = n_diag_no_null",
 #'
 #'
 #' indicators_list <- list(alcohol_indicator_poa, alcohol_i_regex_poa)
-#' reng$run_indicators(indicators_list, append_results = FALSE, csv_path="./results.csv")
+#' IndicR::RunIndicators(reng,indicators_list, append_results = FALSE, csv_path="./results.csv")
 #' }
 #' @export
-#'
-#'
 MatchAllWhere <- function(rule_engine, indicator_name, target_columns, definition_codes,
-                          filter_columns, lookup_values, regex_prefix_search= FALSE,
-                          inverse_match_result= FALSE){
+                          filter_columns, lookup_values, regex_prefix_search= FALSE){
+
+  definition_codes <- definition_codes[definition_codes != "" & !is.na(definition_codes) & !is.null(definition_codes)]
+  if (length(definition_codes) < 1) {
+    stop("Error: 'definition_codes' must contain at least one non-empty, non-null element.")
+  }
+
+  lookup_values <- lookup_values[lookup_values != "" & !is.na(lookup_values) & !is.null(lookup_values)]
+  if (length(lookup_values) < 1) {
+    stop("Error: 'lookup_values' must contain at least one non-empty, non-null element.")
+  }
+
+  check_params_where(rule_engine,indicator_name,target_columns,definition_codes,filter_columns,regex_prefix_search)
+
   MatchAllWhereClass$new(rule_engine, indicator_name, target_columns, definition_codes,
-                         filter_columns, lookup_values, regex_prefix_search,
-                         inverse_match_result)
+                         filter_columns, lookup_values, regex_prefix_search)
 }
 
-#'
 MatchAllWhereClass <- setRefClass(
   "MatchAllWhere",
   contains = "SqlRuleIndicator",
@@ -590,22 +790,6 @@ MatchAllWhereClass <- setRefClass(
     initialize = function(rule_engine, indicator_name, target_columns, definition_codes,
                           filter_columns, lookup_values, regex_prefix_search= FALSE,
                           inverse_match_result= FALSE) {
-
-      invalid_columns <- setdiff(target_columns, rule_engine$columns)
-      if (length(invalid_columns) > 0) {
-        stop("Solo se acepta ... (columnas invalidas): ", paste(invalid_columns, collapse = ", "))
-      }
-
-      invalid_columns <- setdiff(filter_columns, rule_engine$columns)
-      if (length(invalid_columns) > 0) {
-        stop("Solo se acepta ... (columnas invalidas): ", paste(invalid_columns, collapse = ", "))
-      }
-
-
-      if (length(target_columns) != length(filter_columns)) {
-        stop("La longitud debe ser la misma")
-      }
-
       name <<- indicator_name
 
       when_str <- ""
@@ -660,10 +844,15 @@ group by a.row_index_id) where n_diag_match = n_diag_no_null",
 #' for flexible evaluation of conditions within a dataset.
 #'
 #'
-#' @param indicator_name A string representing the name of the indicator.
-#' @param sql_logic A string containing the custom SQL logic to be applied for evaluation.
+#' @param indicator_name Character. A string representing the name of the indicator.
+#' @param sql_logic  Character. A string containing the custom SQL logic to be applied for evaluation.
 #' @return Returns an instance of CustomMatch with the generated SQL query.
-#'
+#' @details
+#' When a `CustomMatch` indicator depends on another previously calculated indicator,
+#' the required indicator must appear before the `CustomMatch` in the list of
+#' indicators provided to the `RuleEngine`.
+#' Additionally, the user must ensure that all variables referenced in the `CustomMatch`
+#' are present in the data frame.
 #' @examples
 #' \dontrun{
 #' hosp_dataframe <- data.frame(
@@ -682,10 +871,10 @@ group by a.row_index_id) where n_diag_match = n_diag_no_null",
 #' definition_codes <- c("F10.10","F10.11","F10.120","F10.121")
 #'
 #' alcohol_indicator <- IndicR::MatchAll(
-#'                 reng,            # rule_engine
-#'                 "alcohol_i",     # Indicator name
-#'                 target_columns,  # Columns where the search is performed.
-#'                 definition_codes # Codes to look for in the columns
+#'                 reng,
+#'                 "alcohol_i",
+#'                 target_columns,
+#'                 definition_codes
 #'                 )
 #'
 #'
@@ -695,7 +884,7 @@ group by a.row_index_id) where n_diag_match = n_diag_no_null",
 #'                         )
 #'
 #' indicators_list <- list(alcohol_indicator,custom_alcohol_indicator)
-#' reng$run_indicators(
+#' IndicR::RunIndicators(reng,
 #'   indicators_list,
 #'   append_results = FALSE,
 #'   csv_path="./results.csv"
@@ -703,11 +892,15 @@ group by a.row_index_id) where n_diag_match = n_diag_no_null",
 #' }
 #' @references Explore all the logical operators you can use in DuckDB https://duckdb.org/docs/stable/sql/query_syntax/where
 #' @export
-#'
 CustomMatch <- function(indicator_name, sql_logic){
+  if (!is.character(indicator_name)) {
+    stop("The 'indicator_name' argument must be of type character")
+  }
+  if (!is.character(sql_logic)) {
+    stop("The 'target_columns' argument must be a list of characters")
+  }
   return(CustomMatchClass$new(indicator_name, sql_logic))
 }
-
 
 CustomMatchClass <- setRefClass(
   "CustomMatch",

@@ -9,25 +9,21 @@ MatchAny(
   indicator_name,
   target_columns,
   definition_codes,
-  regex_prefix_search = FALSE,
-  inverse_match_result = FALSE
+  regex_prefix_search = FALSE
 )
 }
 \arguments{
-\item{rule_engine}{The rule engine containing the dataset where indicators will be applied.}
+\item{rule_engine}{Object of class RuleEngine.The rule engine containing the dataset where indicators will be applied.}
 
-\item{indicator_name}{A string representing the name of the indicator, assigned to the `name` field.}
+\item{indicator_name}{Character. A string representing the name of the indicator, assigned to the `name` field.}
 
-\item{target_columns}{A vector specifying the column names where the match is evaluated.
+\item{target_columns}{List of characters.  Column names where the match is evaluated.
 Searches are performed across all target columns.}
 
-\item{definition_codes}{A set of codes used to define the matching criteria for the target columns.}
+\item{definition_codes}{List of characters. A set of codes used to define the matching criteria for the target columns.}
 
-\item{regex_prefix_search}{Logical value indicating whether to perform prefix-based regex matches (`TRUE`)
+\item{regex_prefix_search}{Logical. Logical value indicating whether to perform prefix-based regex matches (`TRUE`)
 or exact matches (default) (`FALSE`).}
-
-\item{inverse_match_result}{Logical value indicating whether to invert the match results (`TRUE`)
-or retain them as is (`FALSE`).}
 }
 \value{
 Returns an instance of MatchAny with a generated SQL rule.
@@ -53,10 +49,10 @@ target_columns <- c("diagnosis1")
 definition_codes <- c("F10.10","F10.11","F10.120","F10.121")
 
 alcohol_indicator <- IndicR::MatchAny(
-                reng,            # rule_engine
-                "alcohol_i",     # Indicator name
-                target_columns,  # Columns where the search is performed.
-                definition_codes # Codes to look for in the columns
+                reng,
+                "alcohol_i",
+                target_columns,
+                definition_codes
                 )
 }
 }

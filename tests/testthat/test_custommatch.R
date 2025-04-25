@@ -27,7 +27,7 @@ scenario2 <- CustomMatch("scenario2custom", "scenario1 and sex = 'M'")
 scenario3 <- CustomMatch("scenario3custom", "scenario1 and sex = 'F'")
 
 list_scenarios = list(scenario1, scenario2, scenario3)
-result <- reng$run_indicators(list_scenarios, append_results = FALSE)
+result <- RunIndicators(reng,list_scenarios, append_results = FALSE)
 result <- result[order(result$episode_id), ]
 rownames(result) <- NULL
 

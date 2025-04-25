@@ -7,9 +7,9 @@
 CustomMatch(indicator_name, sql_logic)
 }
 \arguments{
-\item{indicator_name}{A string representing the name of the indicator.}
+\item{indicator_name}{Character. A string representing the name of the indicator.}
 
-\item{sql_logic}{A string containing the custom SQL logic to be applied for evaluation.}
+\item{sql_logic}{Character. A string containing the custom SQL logic to be applied for evaluation.}
 }
 \value{
 Returns an instance of CustomMatch with the generated SQL query.
@@ -17,6 +17,13 @@ Returns an instance of CustomMatch with the generated SQL query.
 \description{
 A class that creates a custom SQL indicator based on user-defined logic, allowing
 for flexible evaluation of conditions within a dataset.
+}
+\details{
+When a `CustomMatch` indicator depends on another previously calculated indicator,
+the required indicator must appear before the `CustomMatch` in the list of
+indicators provided to the `RuleEngine`.
+Additionally, the user must ensure that all variables referenced in the `CustomMatch`
+are present in the data frame.
 }
 \examples{
 \dontrun{
@@ -36,10 +43,10 @@ target_columns <- c("diagnosis1")
 definition_codes <- c("F10.10","F10.11","F10.120","F10.121")
 
 alcohol_indicator <- IndicR::MatchAll(
-                reng,            # rule_engine
-                "alcohol_i",     # Indicator name
-                target_columns,  # Columns where the search is performed.
-                definition_codes # Codes to look for in the columns
+                reng,
+                "alcohol_i",
+                target_columns,
+                definition_codes
                 )
 
 
@@ -49,7 +56,7 @@ custom_alcohol_indicator <- IndicR::CustomMatch(
                         )
 
 indicators_list <- list(alcohol_indicator,custom_alcohol_indicator)
-reng$run_indicators(
+IndicR::RunIndicators(reng,
   indicators_list,
   append_results = FALSE,
   csv_path="./results.csv"
