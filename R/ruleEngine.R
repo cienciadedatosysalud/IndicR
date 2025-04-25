@@ -261,7 +261,7 @@ RunIndicators <- function(rule_engine, indicators_rules, only_true_indicators = 
 
   indicators_ok <- all(sapply(indicators_rules, function(rule) inherits(rule, "SqlRuleIndicator")))
   if (!indicators_ok) {
-    stop("Solo se aceptan objetos de la clase SqlRuleIndicator.")
+    stop("'indicators_rules' only accepts objects of the SqlRuleIndicator class (MatchAny, MatchAll, MatchAnyWhere, MatchAllWhere, CustomMatch)")
   }
 
   rule_engine$run_indicators(indicators_rules, only_true_indicators, append_results,
