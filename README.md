@@ -15,7 +15,7 @@ version](https://img.shields.io/badge/GitHub-0.0.0-blue)](https://github.com/cie
 stable](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable/)
 <!-- badges: end -->
 
-**IndicR** is an open-source package.
+**IndicR** is a Lightweight, Fast, and Intuitive Indicator Calculations Package for Health.
 
 ### Development Version
 
@@ -47,12 +47,9 @@ hosp_dataframe <- data.frame(
 
 reng <- IndicR::RuleEngine(hosp_dataframe, "episode_id")
 
-
-### MatchAny regex_prefix_search =  FALSE
-
 target_columns <- c('diagnosis1','diagnosis2','diagnosis3')
 definition_codes <- c('F10.10')
-scenario1 <- MatchAny(reng, "scenario1", target_columns, definition_codes)
+scenario1 <- IndicR::MatchAny(reng, "scenario1", target_columns, definition_codes)
 
 target_columns <- c('diagnosis1','diagnosis3')
 definition_codes <- c('F10.10',"I60")
@@ -61,10 +58,10 @@ scenario2 <- IndicR::MatchAll(reng, "scenario2", target_columns, definition_code
 
 target_columns <- c('diagnosis1','diagnosis2','diagnosis3')
 filter_columns <- c('present_on_admission_d1','present_on_admission_d2','present_on_admission_d3')
-lookup_values <- c('Yes')
+lookup_values <- c('true')
 
 definition_codes <- c('F10.10',"I60")
-scenario3 <- MatchAnyWhere(reng, "scenario3", target_columns,
+scenario3 <- IndicR::MatchAnyWhere(reng, "scenario3", target_columns,
                            definition_codes,
                            filter_columns = filter_columns,
                            lookup_values = lookup_values )
@@ -75,7 +72,7 @@ filter_columns <- c('present_on_admission_d1','present_on_admission_d2','present
 lookup_values <- c('true')
 
 definition_codes <- c('F10.10',"I60")
-scenario4 <- MatchAllWhere(reng, "scenario4", target_columns,
+scenario4 <- IndicR::MatchAllWhere(reng, "scenario4", target_columns,
                            definition_codes,
                            filter_columns = filter_columns,
                            lookup_values = lookup_values )
