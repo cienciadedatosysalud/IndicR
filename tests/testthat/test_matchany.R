@@ -9,8 +9,8 @@ hosp_dataframe <- data.frame(
   diagnosis1 = c("F10.10", "I20", "I60"),
   diagnosis2 = c("E11", "J45", "I25"),
   diagnosis3 = c("I60", "K35", "F10.120"),
-  present_on_admission_d1 = c(FALSE,FALSE,FALSE),
-  present_on_admission_d2 = c("No","Yes","No"),
+  present_on_admission_d1 = c(TRUE,FALSE,FALSE),
+  present_on_admission_d2 = c(FALSE,TRUE,FALSE),
   present_on_admission_d3 = c(FALSE,TRUE,TRUE)
 )
 
