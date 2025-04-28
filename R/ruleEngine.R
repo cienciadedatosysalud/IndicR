@@ -303,7 +303,7 @@ RuleEngineClass <- setRefClass(
     },
 
     run_indicators = function(indicators_rules, only_true_indicators = TRUE, append_results = FALSE,
-                                    csv_path = NULL, to_parquet = FALSE) {
+                                    to_csv = NULL, to_parquet = NULL) {
 
       DBI::dbExecute(conn,sprintf("CREATE OR REPLACE TABLE results_ as (select row_index_id, %s  from dataframe_original)", row_identifier))
       DBI::dbExecute(conn, "
@@ -340,16 +340,15 @@ RuleEngineClass <- setRefClass(
       } else {
         query_get_data <- sprintf("SELECT * exclude(row_index_id) FROM results_ WHERE %s", condition_true)
       }
-
-      if (!is.null(csv_path)) {
-        if (to_parquet) {
-          query_save_csv <- sprintf("COPY (%s) TO '%s' WITH (FORMAT 'parquet', COMPRESSION 'gzip')", query_get_data, csv_path)
-        } else {
-          query_save_csv <- sprintf("COPY (%s) TO '%s' WITH (FORMAT CSV)", query_get_data, csv_path)
-        }
-        DBI::dbExecute(conn, query_save_csv)
+ 
+      if (!is.null(to_csv)) {
+	 query_save_csv <- sprintf("COPY (%s) TO '%s' WITH (FORMAT CSV)", query_get_data, to_csv)
+	 DBI::dbExecute(conn, query_save_parquet)
+      } else if (!is.null(to_parquet)) {
+    	 query_save_parquet <- sprintf("COPY (%s) TO '%s' WITH (FORMAT 'parquet', COMPRESSION 'gzip')", query_get_data, to_parquet)
+	 DBI::dbExecute(conn, query_save_parquet)
       } else {
-        return(DBI::dbGetQuery(conn, query_get_data))
+    	return(DBI::dbGetQuery(conn, query_get_data))
       }
     }
   )
