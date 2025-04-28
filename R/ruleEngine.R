@@ -286,7 +286,7 @@ RuleEngineClass <- setRefClass(
 
       result <- DBI::dbGetQuery(conn, sprintf("select count(*) == count(distinct %s) as valid_identifier from main.dataframe_original", unique_identifier_column))
       if (!result$valid_identifier) {
-        stop("La verificacion ha fallado: los identificadores no son validos. Se detiene la ejecucion.")
+        stop("There are no unique identifiers in the column 'unique_identifier_column'. 'unique_identifier_column' must contain a unique value for each record.")
       }
 
       row_identifier <<- unique_identifier_column
