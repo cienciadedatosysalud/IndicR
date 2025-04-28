@@ -10,7 +10,7 @@ RunIndicators(
   only_true_indicators = TRUE,
   append_results = FALSE,
   to_csv = NULL,
-  to_parquet = FALSE
+  to_parquet = NULL
 )
 }
 \arguments{

@@ -257,7 +257,7 @@ RuleEngine <- function(df,
 #' }
 #' @export
 RunIndicators <- function(rule_engine, indicators_rules, only_true_indicators = TRUE, append_results = FALSE,
-                                   to_csv = NULL, to_parquet = FALSE){
+                                   to_csv = NULL, to_parquet = NULL){
 
   indicators_ok <- all(sapply(indicators_rules, function(rule) inherits(rule, "SqlRuleIndicator")))
   if (!indicators_ok) {
@@ -340,7 +340,7 @@ RuleEngineClass <- setRefClass(
       } else {
         query_get_data <- sprintf("SELECT * exclude(row_index_id) FROM results_ WHERE %s", condition_true)
       }
- 
+
       if (!is.null(to_csv)) {
 	 query_save_csv <- sprintf("COPY (%s) TO '%s' WITH (FORMAT CSV)", query_get_data, to_csv)
 	 DBI::dbExecute(conn, query_save_csv)
