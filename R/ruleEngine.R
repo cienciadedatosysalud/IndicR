@@ -343,7 +343,7 @@ RuleEngineClass <- setRefClass(
  
       if (!is.null(to_csv)) {
 	 query_save_csv <- sprintf("COPY (%s) TO '%s' WITH (FORMAT CSV)", query_get_data, to_csv)
-	 DBI::dbExecute(conn, query_save_parquet)
+	 DBI::dbExecute(conn, query_save_csv)
       } else if (!is.null(to_parquet)) {
     	 query_save_parquet <- sprintf("COPY (%s) TO '%s' WITH (FORMAT 'parquet', COMPRESSION 'gzip')", query_get_data, to_parquet)
 	 DBI::dbExecute(conn, query_save_parquet)
