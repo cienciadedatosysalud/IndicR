@@ -38,10 +38,10 @@ hosp_dataframe <- data.frame(
   sex = c("M", "F", "M"),
   diagnosis1 = c("F10.10", "I20", "I60"),
   diagnosis2 = c("E11", "J45", "I25"),
-  diagnosis3 = c("I60", "K35", "F10.120"),
+  diagnosis3 = c("I61", "K35", "F10.120"),
   present_on_admission_d1 = c(TRUE,FALSE,FALSE),
   present_on_admission_d2 = c(FALSE,TRUE,FALSE),
-  present_on_admission_d3 = c(FALSE,TRUE,TRUE)
+  present_on_admission_d3 = c(TRUE,TRUE,TRUE)
 )
 
 
@@ -52,7 +52,7 @@ definition_codes <- c('F10.10')
 scenario1 <- IndicR::MatchAny(reng, "scenario1", target_columns, definition_codes)
 
 target_columns <- c('diagnosis1','diagnosis3')
-definition_codes <- c('F10.10',"I60")
+definition_codes <- c('I20',"K35")
 scenario2 <- IndicR::MatchAll(reng, "scenario2", target_columns, definition_codes)
 
 
@@ -60,26 +60,29 @@ target_columns <- c('diagnosis1','diagnosis2','diagnosis3')
 filter_columns <- c('present_on_admission_d1','present_on_admission_d2','present_on_admission_d3')
 lookup_values <- c('true')
 
-definition_codes <- c('F10.10',"I60")
+definition_codes <- c('F10.1',"I60")
 scenario3 <- IndicR::MatchAnyWhere(reng, "scenario3", target_columns,
-                           definition_codes,
-                           filter_columns = filter_columns,
-                           lookup_values = lookup_values )
+                                   definition_codes,
+                                   filter_columns = filter_columns,
+                                   lookup_values = lookup_values,
+                                   regex_prefix_search = TRUE)
 
 
 target_columns <- c('diagnosis1','diagnosis2','diagnosis3')
 filter_columns <- c('present_on_admission_d1','present_on_admission_d2','present_on_admission_d3')
 lookup_values <- c('true')
 
-definition_codes <- c('F10.10',"I60")
+definition_codes <- c('F10.1',"I60")
 scenario4 <- IndicR::MatchAllWhere(reng, "scenario4", target_columns,
-                           definition_codes,
-                           filter_columns = filter_columns,
-                           lookup_values = lookup_values )
+                                   definition_codes,
+                                   filter_columns = filter_columns,
+                                   lookup_values = lookup_values,
+                                   regex_prefix_search = TRUE)
 
 
 list_scenarios = list(scenario1, scenario2, scenario3, scenario4)
-result <- IndicR::RunIndicators(reng,list_scenarios, append_results = FALSE)
+result <- IndicR::RunIndicators(reng,list_scenarios, append_results = TRUE,only_true_indicators = TRUE)
+
 
 ```
 
