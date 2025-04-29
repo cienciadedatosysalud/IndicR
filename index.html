@@ -83,10 +83,10 @@ status](https://www.r-pkg.org/badges/version/)](https://CRAN.R-project.org/packa
 <span>  sex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"M"</span><span class="op">)</span>,</span>
 <span>  diagnosis1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F10.10"</span>, <span class="st">"I20"</span>, <span class="st">"I60"</span><span class="op">)</span>,</span>
 <span>  diagnosis2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E11"</span>, <span class="st">"J45"</span>, <span class="st">"I25"</span><span class="op">)</span>,</span>
-<span>  diagnosis3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"I60"</span>, <span class="st">"K35"</span>, <span class="st">"F10.120"</span><span class="op">)</span>,</span>
+<span>  diagnosis3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"I61"</span>, <span class="st">"K35"</span>, <span class="st">"F10.120"</span><span class="op">)</span>,</span>
 <span>  present_on_admission_d1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>,<span class="cn">FALSE</span>,<span class="cn">FALSE</span><span class="op">)</span>,</span>
 <span>  present_on_admission_d2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>,<span class="cn">TRUE</span>,<span class="cn">FALSE</span><span class="op">)</span>,</span>
-<span>  present_on_admission_d3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>,<span class="cn">TRUE</span>,<span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  present_on_admission_d3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>,<span class="cn">TRUE</span>,<span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span></span>
@@ -97,7 +97,7 @@ status](https://www.r-pkg.org/badges/version/)](https://CRAN.R-project.org/packa
 <span><span class="va">scenario1</span> <span class="op">&lt;-</span> <span class="fu">IndicR</span><span class="fu">::</span><span class="fu"><a href="reference/MatchAny.html">MatchAny</a></span><span class="op">(</span><span class="va">reng</span>, <span class="st">"scenario1"</span>, <span class="va">target_columns</span>, <span class="va">definition_codes</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">target_columns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'diagnosis1'</span>,<span class="st">'diagnosis3'</span><span class="op">)</span></span>
-<span><span class="va">definition_codes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'F10.10'</span>,<span class="st">"I60"</span><span class="op">)</span></span>
+<span><span class="va">definition_codes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'I20'</span>,<span class="st">"K35"</span><span class="op">)</span></span>
 <span><span class="va">scenario2</span> <span class="op">&lt;-</span> <span class="fu">IndicR</span><span class="fu">::</span><span class="fu"><a href="reference/MatchAll.html">MatchAll</a></span><span class="op">(</span><span class="va">reng</span>, <span class="st">"scenario2"</span>, <span class="va">target_columns</span>, <span class="va">definition_codes</span><span class="op">)</span></span>
 <span></span>
 <span></span>
@@ -105,26 +105,28 @@ status](https://www.r-pkg.org/badges/version/)](https://CRAN.R-project.org/packa
 <span><span class="va">filter_columns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'present_on_admission_d1'</span>,<span class="st">'present_on_admission_d2'</span>,<span class="st">'present_on_admission_d3'</span><span class="op">)</span></span>
 <span><span class="va">lookup_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'true'</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">definition_codes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'F10.10'</span>,<span class="st">"I60"</span><span class="op">)</span></span>
+<span><span class="va">definition_codes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'F10.1'</span>,<span class="st">"I60"</span><span class="op">)</span></span>
 <span><span class="va">scenario3</span> <span class="op">&lt;-</span> <span class="fu">IndicR</span><span class="fu">::</span><span class="fu"><a href="reference/MatchAnyWhere.html">MatchAnyWhere</a></span><span class="op">(</span><span class="va">reng</span>, <span class="st">"scenario3"</span>, <span class="va">target_columns</span>,</span>
-<span>                           <span class="va">definition_codes</span>,</span>
-<span>                           filter_columns <span class="op">=</span> <span class="va">filter_columns</span>,</span>
-<span>                           lookup_values <span class="op">=</span> <span class="va">lookup_values</span> <span class="op">)</span></span>
+<span>                                   <span class="va">definition_codes</span>,</span>
+<span>                                   filter_columns <span class="op">=</span> <span class="va">filter_columns</span>,</span>
+<span>                                   lookup_values <span class="op">=</span> <span class="va">lookup_values</span>,</span>
+<span>                                   regex_prefix_search <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="va">target_columns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'diagnosis1'</span>,<span class="st">'diagnosis2'</span>,<span class="st">'diagnosis3'</span><span class="op">)</span></span>
 <span><span class="va">filter_columns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'present_on_admission_d1'</span>,<span class="st">'present_on_admission_d2'</span>,<span class="st">'present_on_admission_d3'</span><span class="op">)</span></span>
 <span><span class="va">lookup_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'true'</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">definition_codes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'F10.10'</span>,<span class="st">"I60"</span><span class="op">)</span></span>
+<span><span class="va">definition_codes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'F10.1'</span>,<span class="st">"I60"</span><span class="op">)</span></span>
 <span><span class="va">scenario4</span> <span class="op">&lt;-</span> <span class="fu">IndicR</span><span class="fu">::</span><span class="fu"><a href="reference/MatchAllWhere.html">MatchAllWhere</a></span><span class="op">(</span><span class="va">reng</span>, <span class="st">"scenario4"</span>, <span class="va">target_columns</span>,</span>
-<span>                           <span class="va">definition_codes</span>,</span>
-<span>                           filter_columns <span class="op">=</span> <span class="va">filter_columns</span>,</span>
-<span>                           lookup_values <span class="op">=</span> <span class="va">lookup_values</span> <span class="op">)</span></span>
+<span>                                   <span class="va">definition_codes</span>,</span>
+<span>                                   filter_columns <span class="op">=</span> <span class="va">filter_columns</span>,</span>
+<span>                                   lookup_values <span class="op">=</span> <span class="va">lookup_values</span>,</span>
+<span>                                   regex_prefix_search <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="va">list_scenarios</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">scenario1</span>, <span class="va">scenario2</span>, <span class="va">scenario3</span>, <span class="va">scenario4</span><span class="op">)</span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">IndicR</span><span class="fu">::</span><span class="fu"><a href="reference/RunIndicators.html">RunIndicators</a></span><span class="op">(</span><span class="va">reng</span>,<span class="va">list_scenarios</span>, append_results <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">IndicR</span><span class="fu">::</span><span class="fu"><a href="reference/RunIndicators.html">RunIndicators</a></span><span class="op">(</span><span class="va">reng</span>,<span class="va">list_scenarios</span>, append_results <span class="op">=</span> <span class="cn">TRUE</span>,only_true_indicators <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="id_-disclaimer">📜 Disclaimer<a class="anchor" aria-label="anchor" href="#id_-disclaimer"></a>
@@ -155,7 +157,7 @@ status](https://www.r-pkg.org/badges/version/)](https://CRAN.R-project.org/packa
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Francisco Estupiñan-Romero <br><small class="roles"> Maintainer </small>  </li>
+<li>Francisco Estupiñan-Romero <br><small class="roles"> Maintainer </small>   </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
@@ -181,7 +183,7 @@ status](https://www.r-pkg.org/badges/version/)](https://CRAN.R-project.org/packa
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
       </footer>
