@@ -8,7 +8,7 @@
 <!-- [![CRAN
 status](https://www.r-pkg.org/badges/version/)](https://CRAN.R-project.org/package="package"/)-->
 [![GitHub
-version](https://img.shields.io/badge/GitHub-0.0.0-blue)](https://github.com/cienciadedatosysalud/IndicR)
+version](https://img.shields.io/badge/GitHub-0.1.0-blue)](https://github.com/cienciadedatosysalud/IndicR)
 [![R-CMD-check](https://github.com/cienciadedatosysalud/IndicR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cienciadedatosysalud/IndicR/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/cienciadedatosysalud/IndicR/graph/badge.svg)](https://app.codecov.io/gh/cienciadedatosysalud/IndicR)
 [![Lifecycle:
@@ -82,3 +82,12 @@ list_scenarios = list(scenario1, scenario2, scenario3, scenario4)
 result <- IndicR::RunIndicators(reng,list_scenarios, append_results = FALSE)
 
 ```
+
+## 📜 Disclaimer
+
+This software is provided "as is," without any warranties of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, and non-infringement.
+
+In no event shall the authors, contributors, or maintainers be liable for any direct, indirect, incidental, special, exemplary, or consequential damages (including but not limited to loss of use, data, or profits), regardless of the cause and under any liability theory, whether in contract, strict liability, or tort (including negligence or any other cause), arising in any way from the use of this software, even if advised of the possibility of such damages.
+
+The user assumes full responsibility for the use of this library, including evaluating its suitability and safety in the context of their application.
+
