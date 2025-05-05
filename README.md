@@ -13,6 +13,7 @@ version](https://img.shields.io/badge/GitHub-0.1.0-blue)](https://github.com/cie
 [![Codecov test coverage](https://codecov.io/gh/cienciadedatosysalud/IndicR/graph/badge.svg)](https://app.codecov.io/gh/cienciadedatosysalud/IndicR)
 [![Lifecycle:
 stable](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable/)
+[![DOI](https://zenodo.org/badge/972118056.svg)](https://doi.org/10.5281/zenodo.15342970)
 <!-- badges: end -->
 
 **IndicR** is a Lightweight, Fast, and Intuitive Indicator Calculations R Package from Health data.
