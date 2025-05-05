@@ -86,6 +86,23 @@ result <- IndicR::RunIndicators(reng,list_scenarios, append_results = TRUE,only_
 
 ```
 
+Indicator Builder
+=================
+
+Effortlessly generate indicator calculation script templates using [IndicatorBuilder](https://cienciadedatosysalud.github.io/IndicatorBuilder/). This web tool reads your CSV file, where each column represents an indicator along with its respective definition codes, and outputs a script template ready to be copied and used in R or Python. Streamline your data analysis workflow with IndicatorBuilder.
+
+
+IndicR for Python
+=============
+
+IndicR is also available for **Python** under the name [IndicPy](https://cienciadedatosysalud.github.io/IndicPy/#), offering similar functionality for processing data.
+
+You can find and use IndicPy in its official repository:
+
+🚀 IndicPy on GitHub <https://github.com/cienciadedatosysalud/IndicPy>_
+
+
+
 ## 📜 Disclaimer
 
 This software is provided "as is," without any warranties of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, and non-infringement.
