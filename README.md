@@ -98,11 +98,11 @@ The use of 'IndicatorBuilder' complements the Python library [IndicPy](https://c
 IndicR for Python
 =============
 
-IndicR is also available for **Python** under the name [IndicPy](https://cienciadedatosysalud.github.io/IndicPy/#), offering similar functionality for processing data.
+IndicR is also available for **Python** under the name [IndicPy4Health](https://cienciadedatosysalud.github.io/IndicPy/#), offering similar functionality for processing data.
 
-You can find and use IndicPy in its official repository:
+You can find and use IndicPy4Health in its official repository:
 
-🚀 IndicPy on GitHub <https://github.com/cienciadedatosysalud/IndicPy>_
+🚀 IndicPy4Health on GitHub <https://github.com/cienciadedatosysalud/IndicPy>_
 
 
 
