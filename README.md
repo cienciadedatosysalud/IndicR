@@ -54,7 +54,7 @@ scenario1 <- IndicR4Health::MatchAny(reng, "scenario1", target_columns, definiti
 
 target_columns <- c('diagnosis1','diagnosis3')
 definition_codes <- c('F10.10',"I60")
-scenario2 <- IndicR::MatchAll(reng, "scenario2", target_columns, definition_codes)
+scenario2 <- IndicR4Health::MatchAll(reng, "scenario2", target_columns, definition_codes)
 
 
 target_columns <- c('diagnosis1','diagnosis2','diagnosis3')
@@ -62,7 +62,7 @@ filter_columns <- c('present_on_admission_d1','present_on_admission_d2','present
 lookup_values <- c('true')
 
 definition_codes <- c('F10.10',"I60")
-scenario3 <- IndicR::MatchAnyWhere(reng, "scenario3", target_columns,
+scenario3 <- IndicR4Health::MatchAnyWhere(reng, "scenario3", target_columns,
                            definition_codes,
                            filter_columns = filter_columns,
                            lookup_values = lookup_values )
@@ -73,14 +73,14 @@ filter_columns <- c('present_on_admission_d1','present_on_admission_d2','present
 lookup_values <- c('true')
 
 definition_codes <- c('F10.10',"I60")
-scenario4 <- IndicR::MatchAllWhere(reng, "scenario4", target_columns,
+scenario4 <- IndicR4Health::MatchAllWhere(reng, "scenario4", target_columns,
                            definition_codes,
                            filter_columns = filter_columns,
                            lookup_values = lookup_values )
 
 
 list_scenarios = list(scenario1, scenario2, scenario3, scenario4)
-result <- IndicR::RunIndicators(reng,list_scenarios, append_results = FALSE)
+result <- IndicR4Health::RunIndicators(reng,list_scenarios, append_results = FALSE)
 
 
 ```
