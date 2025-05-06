@@ -1,0 +1,39 @@
+{
+    "title": "IndicR",
+    "description": "IndicR is a Lightweight, Fast, and Intuitive Indicator Calculations R Package from Health data.",
+    "creators": [
+        {
+            "name": "González-Galindo, Javier",
+            "affiliation": "Instituto Aragonés de Ciencias de la Salud (IACS)",
+            "orcid": "0000-0002-8783-5478"
+        },
+        {
+            "name": "Estupiñán-Romero, Francisco",
+            "affiliation": "Instituto Aragonés de Ciencias de la Salud (IACS)",
+            "orcid": "0000-0002-6285-8120"
+        },
+        {
+            "name": "Royo-Sierra, Santiago",
+            "affiliation": "Instituto Aragonés de Ciencias de la Salud (IACS)",
+            "orcid": "0000-0002-0048-4370"
+        },
+        {
+            "name": " Ridao-López, Manuel",
+            "affiliation": "Instituto Aragonés de Ciencias de la Salud (IACS)",
+            "id": "0000-0001-7837-5759"
+        },
+        {
+            "name": "Bernal-Delgado, Enrique (Investigador Principal)",
+            "affiliation": "Instituto Aragonés de Ciencias de la Salud (IACS)",
+            "orcid": "0000-0002-0961-3298"
+        }
+        
+    ],
+    "keywords": [
+        "R package",
+        "health data",
+        "health outcomes",
+        "health statistics R",
+        "indicator calculation"
+    ]
+}
