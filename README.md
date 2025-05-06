@@ -16,7 +16,7 @@ stable](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](http
 [![DOI](https://zenodo.org/badge/972118056.svg)](https://doi.org/10.5281/zenodo.15342970)
 <!-- badges: end -->
 
-**IndicR** is a Lightweight, Fast, and Intuitive Indicator Calculations Package for Health.
+**IndicR4Health** is a Lightweight, Fast, and Intuitive Indicator Calculations Package for Health.
 
 ### Development Version
 
