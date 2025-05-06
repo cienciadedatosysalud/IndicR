@@ -93,10 +93,10 @@ Effortlessly generate indicator calculation script templates using 'IndicatorBui
 The use of 'IndicatorBuilder' complements the Python library [IndicPy4Health](https://cienciadedatosysalud.github.io/IndicPy4Health/#) and the R package [IndicR4Health](https://cienciadedatosysalud.github.io/IndicR4Health/), providing an easy-to-use tool scripting the definition of any indicator within your preferred programming environment.
 
 
-IndicR for Python
+IndicR4Health for Python
 =============
 
-IndicR is also available for **Python** under the name [IndicPy4Health](https://cienciadedatosysalud.github.io/IndicPy4Health/#), offering similar functionality for processing data.
+IndicR4Health is also available for **Python** under the name [IndicPy4Health](https://cienciadedatosysalud.github.io/IndicPy4Health/#), offering similar functionality for processing data.
 
 You can find and use IndicPy4Health in its official repository:
 
