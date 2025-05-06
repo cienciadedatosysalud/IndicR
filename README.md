@@ -8,9 +8,9 @@
 <!-- [![CRAN
 status](https://www.r-pkg.org/badges/version/)](https://CRAN.R-project.org/package="package"/)-->
 [![GitHub
-version](https://img.shields.io/badge/GitHub-0.0.0-blue)](https://github.com/cienciadedatosysalud/IndicR)
-[![R-CMD-check](https://github.com/cienciadedatosysalud/IndicR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cienciadedatosysalud/IndicR/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/cienciadedatosysalud/IndicR/graph/badge.svg)](https://app.codecov.io/gh/cienciadedatosysalud/IndicR)
+version](https://img.shields.io/badge/GitHub-0.0.0-blue)](https://github.com/cienciadedatosysalud/IndicR4Health)
+[![R-CMD-check](https://github.com/cienciadedatosysalud/IndicR4Health/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cienciadedatosysalud/IndicR4Health/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/cienciadedatosysalud/IndicR4Health/graph/badge.svg)](https://app.codecov.io/gh/cienciadedatosysalud/IndicR)
 [![Lifecycle:
 stable](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable/)
 [![DOI](https://zenodo.org/badge/972118056.svg)](https://doi.org/10.5281/zenodo.15342970)
@@ -90,17 +90,17 @@ Indicator Builder
 
 Effortlessly generate indicator calculation script templates using 'IndicatorBuilder'. This web tool reads a CSV file, where each column represents an indicator by including its respective definition codes, and outputs a script template ready to be copied and used in R or Python. You can streamline your data analysis workflow with 'IndicatorBuilder'.
  
-The use of 'IndicatorBuilder' complements the Python library [IndicPy](https://cienciadedatosysalud.github.io/IndicPy/#) and the R package [IndicR](https://cienciadedatosysalud.github.io/IndicR/), providing an easy-to-use tool scripting the definition of any indicator within your preferred programming environment.
+The use of 'IndicatorBuilder' complements the Python library [IndicPy4Health](https://cienciadedatosysalud.github.io/IndicPy4Health/#) and the R package [IndicR4Health](https://cienciadedatosysalud.github.io/IndicR4Health/), providing an easy-to-use tool scripting the definition of any indicator within your preferred programming environment.
 
 
 IndicR for Python
 =============
 
-IndicR is also available for **Python** under the name [IndicPy4Health](https://cienciadedatosysalud.github.io/IndicPy/#), offering similar functionality for processing data.
+IndicR is also available for **Python** under the name [IndicPy4Health](https://cienciadedatosysalud.github.io/IndicPy4Health/#), offering similar functionality for processing data.
 
 You can find and use IndicPy4Health in its official repository:
 
-🚀 IndicPy4Health on GitHub <https://github.com/cienciadedatosysalud/IndicPy>_
+🚀 IndicPy4Health on GitHub <https://github.com/cienciadedatosysalud/IndicPy4Health>_
 
 
 
