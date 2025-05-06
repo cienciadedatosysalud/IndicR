@@ -1,4 +1,4 @@
-Package: IndicR
+Package: IndicR4Health
 Type: Package
 Title: Lightweight, Fast, and Intuitive Indicator Calculations for Health
 Version: 0.1.0
@@ -7,7 +7,7 @@ Author: Javier González-Galindo [aut, cre] (<jgonzalezga.iacs@aragon.es>),
   Santiago Royo-Sierra [aut] (<sroyo.iacs@aragon.es>)
 Maintainer: Francisco Estupiñan-Romero <festupinnan.iacs@aragon.es>,
   Javier González-Galindo <jgonzalezga.iacs@aragon.es>
-Description: The IndicR package provides the most commonly used health logics 
+Description: The IndicR4Health package provides the most commonly used health logics 
     to calculate indicators in a lightweight, fast, and intuitive manner. 
     Ideal for analyzing health-related data efficiently.
 License: CC BY-NC 4.0

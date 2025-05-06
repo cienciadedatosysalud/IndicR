@@ -66,7 +66,7 @@ definition_codes <- c("F10.10","F10.11","F10.120","F10.121")
 filter_columns <- c("present_on_admission_d2","present_on_admission_d3")
 lookup_values <- c("Yes", "true")
 
-alcohol_indicator_poa <- IndicR::MatchAllWhere(
+alcohol_indicator_poa <- IndicR4Health::MatchAllWhere(
                 reng,
                 "alcohol_i_poa",
                 target_columns,
@@ -76,7 +76,7 @@ alcohol_indicator_poa <- IndicR::MatchAllWhere(
                 )
 
 # Codes to look for in target_columns (start with "F10")
-alcohol_i_regex_poa <- IndicR::MatchAllWhere(
+alcohol_i_regex_poa <- IndicR4Health::MatchAllWhere(
                 reng,
                 "alcohol_i_regex_poa",
                 target_columns,
@@ -88,6 +88,6 @@ alcohol_i_regex_poa <- IndicR::MatchAllWhere(
 
 
 indicators_list <- list(alcohol_indicator_poa, alcohol_i_regex_poa)
-IndicR::RunIndicators(reng,indicators_list, append_results = FALSE, csv_path="./results.csv")
+IndicR4Health::RunIndicators(reng,indicators_list, append_results = FALSE, csv_path="./results.csv")
 }
 }

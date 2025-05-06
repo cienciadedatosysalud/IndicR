@@ -42,7 +42,7 @@ target_columns <- c("diagnosis1")
 
 definition_codes <- c("F10.10","F10.11","F10.120","F10.121")
 
-alcohol_indicator <- IndicR::MatchAll(
+alcohol_indicator <- IndicR4Health::MatchAll(
                 reng,
                 "alcohol_i",
                 target_columns,
@@ -50,13 +50,13 @@ alcohol_indicator <- IndicR::MatchAll(
                 )
 
 
-custom_alcohol_indicator <- IndicR::CustomMatch(
+custom_alcohol_indicator <- IndicR4Health::CustomMatch(
                             "alcohol_i_plus40", # Name of the indicator
                             "alcohol_i AND age >= 40" # Logic of the indicator
                         )
 
 indicators_list <- list(alcohol_indicator,custom_alcohol_indicator)
-IndicR::RunIndicators(reng,
+IndicR4Health::RunIndicators(reng,
   indicators_list,
   append_results = FALSE,
   csv_path="./results.csv"

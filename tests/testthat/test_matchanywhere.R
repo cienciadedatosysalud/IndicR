@@ -1,5 +1,5 @@
 
-library(IndicR)
+library(IndicR4Health)
 library(testthat)
 
 hosp_dataframe <- data.frame(
@@ -15,7 +15,7 @@ hosp_dataframe <- data.frame(
 )
 
 
-reng <- IndicR::RuleEngine(hosp_dataframe, "episode_id")
+reng <- IndicR4Health::RuleEngine(hosp_dataframe, "episode_id")
 
 
 ### MatchAnyWhere regex_prefix_search =  FALSE
@@ -40,7 +40,7 @@ scenario2 <- MatchAnyWhere(reng, "scenario2", target_columns,
 
 
 list_scenarios = list(scenario1, scenario2)
-result <- IndicR::RunIndicators(reng,list_scenarios, append_results = FALSE)
+result <- IndicR4Health::RunIndicators(reng,list_scenarios, append_results = FALSE)
 
 result_scenario1 <- result[c('episode_id', 'scenario1')]
 result_scenario2 <- result[c('episode_id', 'scenario2')]

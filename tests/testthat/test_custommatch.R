@@ -1,5 +1,5 @@
 
-library(IndicR)
+library(IndicR4Health)
 library(testthat)
 
 hosp_dataframe <- data.frame(
@@ -15,7 +15,7 @@ hosp_dataframe <- data.frame(
 )
 
 
-reng <- IndicR::RuleEngine(hosp_dataframe, "episode_id")
+reng <- IndicR4Health::RuleEngine(hosp_dataframe, "episode_id")
 
 
 ### MatchAny regex_prefix_search =  FALSE, inverse_match_result =  FALSE

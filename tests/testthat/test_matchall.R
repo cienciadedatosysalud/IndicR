@@ -1,5 +1,5 @@
 
-library(IndicR)
+library(IndicR4Health)
 library(testthat)
 
 hosp_dataframe <- data.frame(
@@ -15,7 +15,7 @@ hosp_dataframe <- data.frame(
 )
 
 
-reng <- IndicR::RuleEngine(hosp_dataframe, "episode_id")
+reng <- IndicR4Health::RuleEngine(hosp_dataframe, "episode_id")
 
 
 
@@ -25,15 +25,15 @@ reng <- IndicR::RuleEngine(hosp_dataframe, "episode_id")
 
 target_columns <- c('diagnosis1','diagnosis3')
 definition_codes <- c('F10.10',"I60")
-scenario1 <- IndicR::MatchAll(reng, "scenario1", target_columns, definition_codes)
+scenario1 <- IndicR4Health::MatchAll(reng, "scenario1", target_columns, definition_codes)
 
 ### MatchAll regex_prefix_search =  TRUE
 definition_codes <- c('F10.1','I')
-scenario2 <- IndicR::MatchAll(reng, "scenario2", target_columns, definition_codes,regex_prefix_search =  TRUE)
+scenario2 <- IndicR4Health::MatchAll(reng, "scenario2", target_columns, definition_codes,regex_prefix_search =  TRUE)
 
 
 list_scenarios = list(scenario1, scenario2)
-result <- IndicR::RunIndicators(reng,list_scenarios, append_results = FALSE)
+result <- IndicR4Health::RunIndicators(reng,list_scenarios, append_results = FALSE)
 
 result_scenario1 <- result[c('episode_id', 'scenario1')]
 result_scenario2 <- result[c('episode_id', 'scenario2')]

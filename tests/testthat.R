@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(IndicR)
+library(IndicR4Health)
 
-test_check("IndicR")
+test_check("IndicR4Health")

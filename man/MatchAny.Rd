@@ -48,7 +48,7 @@ target_columns <- c("diagnosis1")
 
 definition_codes <- c("F10.10","F10.11","F10.120","F10.121")
 
-alcohol_indicator <- IndicR::MatchAny(
+alcohol_indicator <- IndicR4Health::MatchAny(
                 reng,
                 "alcohol_i",
                 target_columns,

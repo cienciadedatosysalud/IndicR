@@ -1,36 +1,36 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# IndicR 
+# IndicR4Health 
 
 <!-- badges: start -->
 
 <!-- [![CRAN
 status](https://www.r-pkg.org/badges/version/)](https://CRAN.R-project.org/package="package"/)-->
 [![GitHub
-version](https://img.shields.io/badge/GitHub-0.0.0-blue)](https://github.com/cienciadedatosysalud/IndicR)
-[![R-CMD-check](https://github.com/cienciadedatosysalud/IndicR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cienciadedatosysalud/IndicR/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/cienciadedatosysalud/IndicR/graph/badge.svg)](https://app.codecov.io/gh/cienciadedatosysalud/IndicR)
+version](https://img.shields.io/badge/GitHub-0.0.0-blue)](https://github.com/cienciadedatosysalud/IndicR4Health)
+[![R-CMD-check](https://github.com/cienciadedatosysalud/IndicR4Health/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cienciadedatosysalud/IndicR4Health/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/cienciadedatosysalud/IndicR4Health/graph/badge.svg)](https://app.codecov.io/gh/cienciadedatosysalud/IndicR4Health)
 [![Lifecycle:
 stable](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable/)
 <!-- badges: end -->
 
-**IndicR** is a Lightweight, Fast, and Intuitive Indicator Calculations Package for Health.
+**IndicR4Health** is a Lightweight, Fast, and Intuitive Indicator Calculations Package for Health.
 
 ### Development Version
 
-You can install the development version of **IndicR** from
+You can install the development version of **IndicR4Health** from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("cienciadedatosysalud/IndicR")
+devtools::install_github("cienciadedatosysalud/IndicR4Health")
 ```
 
 ## Example
 
 ``` r
-library(IndicR)
+library(IndicR4Health)
 
 hosp_dataframe <- data.frame(
   episode_id = c(1, 2, 3),
@@ -45,15 +45,15 @@ hosp_dataframe <- data.frame(
 )
 
 
-reng <- IndicR::RuleEngine(hosp_dataframe, "episode_id")
+reng <- IndicR4Health::RuleEngine(hosp_dataframe, "episode_id")
 
 target_columns <- c('diagnosis1','diagnosis2','diagnosis3')
 definition_codes <- c('F10.10')
-scenario1 <- IndicR::MatchAny(reng, "scenario1", target_columns, definition_codes)
+scenario1 <- IndicR4Health::MatchAny(reng, "scenario1", target_columns, definition_codes)
 
 target_columns <- c('diagnosis1','diagnosis3')
 definition_codes <- c('F10.10',"I60")
-scenario2 <- IndicR::MatchAll(reng, "scenario2", target_columns, definition_codes)
+scenario2 <- IndicR4Health::MatchAll(reng, "scenario2", target_columns, definition_codes)
 
 
 target_columns <- c('diagnosis1','diagnosis2','diagnosis3')
@@ -61,7 +61,7 @@ filter_columns <- c('present_on_admission_d1','present_on_admission_d2','present
 lookup_values <- c('true')
 
 definition_codes <- c('F10.10',"I60")
-scenario3 <- IndicR::MatchAnyWhere(reng, "scenario3", target_columns,
+scenario3 <- IndicR4Health::MatchAnyWhere(reng, "scenario3", target_columns,
                            definition_codes,
                            filter_columns = filter_columns,
                            lookup_values = lookup_values )
@@ -72,13 +72,13 @@ filter_columns <- c('present_on_admission_d1','present_on_admission_d2','present
 lookup_values <- c('true')
 
 definition_codes <- c('F10.10',"I60")
-scenario4 <- IndicR::MatchAllWhere(reng, "scenario4", target_columns,
+scenario4 <- IndicR4Health::MatchAllWhere(reng, "scenario4", target_columns,
                            definition_codes,
                            filter_columns = filter_columns,
                            lookup_values = lookup_values )
 
 
 list_scenarios = list(scenario1, scenario2, scenario3, scenario4)
-result <- IndicR::RunIndicators(reng,list_scenarios, append_results = FALSE)
+result <- IndicR4Health::RunIndicators(reng,list_scenarios, append_results = FALSE)
 
 ```

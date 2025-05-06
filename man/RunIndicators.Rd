@@ -60,7 +60,7 @@ rule_engine <- RuleEngine(df,"hospitalization_id")
 target_columns <- c("diagnosis1")
 definition_codes <- c("F10.10","F10.11","F10.120","F10.121")
 
-alcohol_indicator <- IndicR::MatchAny(
+alcohol_indicator <- IndicR4Health::MatchAny(
                 rule_engine,
                 "alcohol_i",
                 target_columns,
@@ -69,7 +69,7 @@ alcohol_indicator <- IndicR::MatchAny(
 indicators_rules <- list(alcohol_indicator)
 
 # Option return data frame
-result <- IndicR::RunIndicators(
+result <- IndicR4Health::RunIndicators(
   rule_engine,
   indicators_rules,
   only_true_indicators = TRUE,
@@ -77,7 +77,7 @@ result <- IndicR::RunIndicators(
   )
 
 # Option save to csv file
-IndicR::RunIndicators(
+IndicR4Health::RunIndicators(
   rule_engine,
   indicators_rules,
   only_true_indicators = TRUE,
@@ -86,7 +86,7 @@ IndicR::RunIndicators(
   )
 
 # Option save to parquet file
-IndicR::RunIndicators(
+IndicR4Health::RunIndicators(
   rule_engine,
   indicators_rules,
   only_true_indicators = TRUE,

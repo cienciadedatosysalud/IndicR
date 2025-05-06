@@ -1,4 +1,4 @@
-# IndicR
+# IndicR4Health
 
 
 SqlRuleIndicator <- setRefClass(
@@ -221,7 +221,7 @@ RuleEngine <- function(df,
 #' target_columns <- c("diagnosis1")
 #' definition_codes <- c("F10.10","F10.11","F10.120","F10.121")
 #'
-#' alcohol_indicator <- IndicR::MatchAny(
+#' alcohol_indicator <- IndicR4Health::MatchAny(
 #'                 rule_engine,
 #'                 "alcohol_i",
 #'                 target_columns,
@@ -230,7 +230,7 @@ RuleEngine <- function(df,
 #' indicators_rules <- list(alcohol_indicator)
 #'
 #' # Option return data frame
-#' result <- IndicR::RunIndicators(
+#' result <- IndicR4Health::RunIndicators(
 #'   rule_engine,
 #'   indicators_rules,
 #'   only_true_indicators = TRUE,
@@ -238,7 +238,7 @@ RuleEngine <- function(df,
 #'   )
 #'
 #' # Option save to csv file
-#' IndicR::RunIndicators(
+#' IndicR4Health::RunIndicators(
 #'   rule_engine,
 #'   indicators_rules,
 #'   only_true_indicators = TRUE,
@@ -247,7 +247,7 @@ RuleEngine <- function(df,
 #'   )
 #'
 #' # Option save to parquet file
-#' IndicR::RunIndicators(
+#' IndicR4Health::RunIndicators(
 #'   rule_engine,
 #'   indicators_rules,
 #'   only_true_indicators = TRUE,
@@ -384,7 +384,7 @@ RuleEngineClass <- setRefClass(
 #'
 #' definition_codes <- c("F10.10","F10.11","F10.120","F10.121")
 #'
-#' alcohol_indicator <- IndicR::MatchAny(
+#' alcohol_indicator <- IndicR4Health::MatchAny(
 #'                 reng,
 #'                 "alcohol_i",
 #'                 target_columns,
@@ -499,7 +499,7 @@ MatchAnyClass <- setRefClass(
 #' filter_columns <- c("present_on_admission_d2","present_on_admission_d3")
 #' lookup_values <- c("Yes", "true")
 #'
-#' alcohol_indicator_poa <- IndicR::MatchAnyWhere(
+#' alcohol_indicator_poa <- IndicR4Health::MatchAnyWhere(
 #'                 reng,
 #'                 "alcohol_i_poa",
 #'                 target_columns,
@@ -509,7 +509,7 @@ MatchAnyClass <- setRefClass(
 #'               )
 #'
 #' # Codes to look for in the columns (start with "F10")
-#' alcohol_i_regex_poa <- IndicR::MatchAnyWhere(
+#' alcohol_i_regex_poa <- IndicR4Health::MatchAnyWhere(
 #'                 reng,
 #'                 "alcohol_i_regex_poa",
 #'                 target_columns,
@@ -521,7 +521,7 @@ MatchAnyClass <- setRefClass(
 #'
 #'
 #' indicators_list <- list(alcohol_indicator_poa, alcohol_i_regex_poa)
-#' IndicR::RunIndicators(reng,indicators_list, append_results = FALSE, csv_path="./results.csv")
+#' IndicR4Health::RunIndicators(reng,indicators_list, append_results = FALSE, csv_path="./results.csv")
 #' }
 #' @export
 MatchAnyWhere <- function(rule_engine, indicator_name, target_columns, definition_codes,
@@ -615,7 +615,7 @@ WHERE b.code_to_compare IS NOT NULL", codes_part, if (inverse_match_result) "NOT
 #'
 #' definition_codes <- c("F10.10","F10.11","F10.120","F10.121")
 #'
-#' alcohol_indicator <- IndicR::MatchAll(
+#' alcohol_indicator <- IndicR4Health::MatchAll(
 #'                 reng,
 #'                 "alcohol_i",
 #'                 target_columns,
@@ -738,7 +738,7 @@ group by a.row_index_id) where n_diag_match = n_diag_no_null",
 #' filter_columns <- c("present_on_admission_d2","present_on_admission_d3")
 #' lookup_values <- c("Yes", "true")
 #'
-#' alcohol_indicator_poa <- IndicR::MatchAllWhere(
+#' alcohol_indicator_poa <- IndicR4Health::MatchAllWhere(
 #'                 reng,
 #'                 "alcohol_i_poa",
 #'                 target_columns,
@@ -748,7 +748,7 @@ group by a.row_index_id) where n_diag_match = n_diag_no_null",
 #'                 )
 #'
 #' # Codes to look for in target_columns (start with "F10")
-#' alcohol_i_regex_poa <- IndicR::MatchAllWhere(
+#' alcohol_i_regex_poa <- IndicR4Health::MatchAllWhere(
 #'                 reng,
 #'                 "alcohol_i_regex_poa",
 #'                 target_columns,
@@ -760,7 +760,7 @@ group by a.row_index_id) where n_diag_match = n_diag_no_null",
 #'
 #'
 #' indicators_list <- list(alcohol_indicator_poa, alcohol_i_regex_poa)
-#' IndicR::RunIndicators(reng,indicators_list, append_results = FALSE, csv_path="./results.csv")
+#' IndicR4Health::RunIndicators(reng,indicators_list, append_results = FALSE, csv_path="./results.csv")
 #' }
 #' @export
 MatchAllWhere <- function(rule_engine, indicator_name, target_columns, definition_codes,
@@ -869,7 +869,7 @@ group by a.row_index_id) where n_diag_match = n_diag_no_null",
 #'
 #' definition_codes <- c("F10.10","F10.11","F10.120","F10.121")
 #'
-#' alcohol_indicator <- IndicR::MatchAll(
+#' alcohol_indicator <- IndicR4Health::MatchAll(
 #'                 reng,
 #'                 "alcohol_i",
 #'                 target_columns,
@@ -877,13 +877,13 @@ group by a.row_index_id) where n_diag_match = n_diag_no_null",
 #'                 )
 #'
 #'
-#' custom_alcohol_indicator <- IndicR::CustomMatch(
+#' custom_alcohol_indicator <- IndicR4Health::CustomMatch(
 #'                             "alcohol_i_plus40", # Name of the indicator
 #'                             "alcohol_i AND age >= 40" # Logic of the indicator
 #'                         )
 #'
 #' indicators_list <- list(alcohol_indicator,custom_alcohol_indicator)
-#' IndicR::RunIndicators(reng,
+#' IndicR4Health::RunIndicators(reng,
 #'   indicators_list,
 #'   append_results = FALSE,
 #'   csv_path="./results.csv"
